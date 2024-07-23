@@ -1,7 +1,11 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { UsersDocument } from '../schemas/user.schema';
+import { UsersDocument } from '../users/schemas/user.schema';
 import { Request as ExRequest } from 'express-serve-static-core';
 import e from 'express';
+
+/**
+ * acts as hooks similar to feathers.js
+ */
 
 declare type Request = {
   user: UsersDocument;

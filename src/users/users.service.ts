@@ -19,7 +19,7 @@ export class UsersService {
       ...createUsersDto,
       password,
     });
-    return this.#sanitizeUser(user);
+    return this.sanitizeUser(user);
   }
 
   async findAll(
@@ -68,7 +68,7 @@ export class UsersService {
       .exec();
   }
 
-  #sanitizeUser(user: UsersDocument) {
+  sanitizeUser(user: UsersDocument) {
     const sanitized = user.toObject();
     delete sanitized['password'];
     return sanitized;

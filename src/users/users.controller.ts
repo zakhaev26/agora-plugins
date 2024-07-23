@@ -13,18 +13,22 @@ import { UsersService } from './users.service';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { Users } from './schemas/user.schema';
 import { PaginatedResponse } from '../types/PaginatedResponse';
-import { ModifyBody, setCreatedBy } from './decorators/modify-body.decorator';
+import { ModifyBody, setCreatedBy } from '../decorators/modify-body.decorator';
+import { UserRole } from './constants/user-roles.enum';
+import { Roles } from './decorator/roles.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
   async create(@ModifyBody(setCreatedBy()) createUsersDto: CreateUsersDto) {
     return await this.usersService.create(createUsersDto);
   }
 
   @Get()
+  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
   async findAll(
     @Query('$skip', new DefaultValuePipe(0), new ParseIntPipe()) $skip: number,
     @Query('$limit', new DefaultValuePipe(10), new ParseIntPipe())
@@ -46,6 +50,7 @@ export class UsersController {
   // }
 
   @Patch(':id')
+  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
   async patch(
     @Param('id') id: string,
     @Body('patchUserDto') patchUserDto: CreateUsersDto,
